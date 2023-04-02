@@ -19,6 +19,10 @@
   "homepage": "https://github.com/MatteoDigiorgio/BuyMeACoffee#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.5",
     "hardhat": "^2.13.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
   }
 }
