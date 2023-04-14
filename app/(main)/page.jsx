@@ -3,7 +3,6 @@ import abi from "../../utils/BuyMeACoffee.json";
 import { ethers } from "ethers";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import styles from "./Home.module.css";
 import {
   useAccount,
   useConnect,
@@ -11,6 +10,7 @@ import {
   useContractRead,
   usePrepareContractWrite,
 } from "wagmi";
+import moment from "moment";
 
 export default function Home() {
   // Component state
@@ -84,54 +84,81 @@ export default function Home() {
     let buyMeACoffee;
   }, []);
   return (
-    <div className={styles.container}>
+    <div className="px-2 min-h-screen bg-[#EFDECD] bg-coffee_wave bg-cover flex flex-col justify-center items-center ">
       <Head>
         <title>Buy Matteo a Coffee!</title>
         <meta name="description" content="Tipping site" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>Buy Matteo a Coffee!</h1>
+      <main className="flex flex-col justify-center items-center py-20">
+        <h1 className="flex-wrap m-10 p-10 text-6xl text-center font-bold whitespace-normal">
+          Buy{" "}
+          <span className="bg-gradient-to-r from-cyan-400 to-blue-800  bg-clip-text text-transparent font-extrabold">
+            Matteo
+          </span>{" "}
+          a Coffee!
+        </h1>
 
         {isConnected ? (
           <>
-            {isConnected && <div>Connected to {activeConnector?.name}</div>}
-            <div>
-              <form>
-                <div className="formgroup">
+            {isConnected && (
+              <div className="absolute top-5 right-5 italic font-extralight">
+                Connected to {activeConnector?.name}
+              </div>
+            )}
+            <div className="w-64 p-5 backdrop-blur-sm bg-white/20 rounded-lg drop-shadow-xl">
+              <form className="w-full">
+                {/* Name */}
+                <div className="w-full">
                   <label>Name</label>
-                  <br />
-
                   <input
                     id="name"
                     type="text"
                     placeholder="anon"
                     onChange={onNameChange}
+                    className="border-2 border-[#6F4E37] rounded-md p-2 w-full bg-[#FFF7EF] placeholder:italic focus:outline-none focus:ring focus:ring-[#BD865E]"
                   />
                 </div>
-                <br />
-                <div className="formgroup">
+                {/* Message */}
+                <div className="w-full">
                   <label>Send Matteo a message</label>
-                  <br />
-
                   <textarea
                     rows={3}
                     placeholder="Enjoy your coffee!"
                     id="message"
                     onChange={onMessageChange}
                     required
+                    className="border-2 border-[#6F4E37] rounded-md p-2 w-full bg-[#FFF7EF] placeholder:italic focus:outline-none focus:ring focus:ring-[#BD865E]"
                   ></textarea>
                 </div>
-                <div>
+                {/* Button */}
+                <div className="flex flex-col content-center w-full mt-3">
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       write?.();
                     }}
                     type="button"
+                    className="flex rounded-full p-2 items-center justify-center transition ease-in-out align-middle bg-[#EFDECD] hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r hover:from-cyan-400 hover:to-blue-800 text-[#647cf6] hover:text-white duration-300 hover:ring hover:ring-blue-900 hover:shadow-lg hover:shadow-blue-900/50"
                   >
-                    Send 1 Coffee for 0.001ETH
+                    <span className="text-lg text-black ">0.001 ETH</span>
+                    <svg
+                      width="20"
+                      height="20"
+                      aria-hidden="true"
+                      focusable="false"
+                      data-prefix="fab"
+                      data-icon="ethereum"
+                      role="img"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 320 512"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M311.9 260.8L160 353.6 8 260.8 160 0l151.9 260.8zM160 383.4L8 290.6 160 512l152-221.4-152 92.8z"
+                      ></path>
+                    </svg>
+                    <span className="text-2xl text-black">→ ☕️</span>
                   </button>
                   {isLoadingWrite && <div>Check Wallet</div>}
                   {isSuccess && <div>Transaction: {JSON.stringify(buy)}</div>}
@@ -156,35 +183,30 @@ export default function Home() {
           </>
         )}
       </main>
-
       {isConnected && <h1>Memos received</h1>}
-
-      {isConnected &&
-        getMemos() &&
-        memos?.map((memo, idx) => {
-          return (
-            <div
-              key={idx}
-              style={{
-                border: "2px solid",
-                "border-radius": "5px",
-                padding: "5px",
-                margin: "5px",
-              }}
-            >
-              <p style={{ "font-weight": "bold" }}>"{memo.message}"</p>
-              <p>
-                From: {memo.name} at {memo.timestamp.toString()}
-              </p>
-            </div>
-          );
-        })}
-
-      <footer className={styles.footer}>
+      <div className="flex">
+        {isConnected &&
+          getMemos() &&
+          memos?.map((memo, idx) => {
+            return (
+              <div key={idx} className="rounded border-2 p-2 m-2">
+                <p className="font-bold">"{memo.message}"</p>
+                <p>
+                  {memo.name} at{" "}
+                  {moment
+                    .unix(memo.timestamp.toString())
+                    .format("MMMM Do, YYYY")}
+                </p>
+              </div>
+            );
+          })}
+      </div>
+      <footer className="w-full h-24 flex mt-12 justify-center items-center border-t border-black">
         <a
           href="https://github.com/MatteoDigiorgio/BuyMeACoffee"
           target="_blank"
           rel="noopener noreferrer"
+          className="flex justify-center items-center flex-grow"
         >
           Created by @matteodigiorgio
         </a>
