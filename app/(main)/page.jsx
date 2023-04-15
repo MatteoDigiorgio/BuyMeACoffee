@@ -6,11 +6,16 @@ import React, { useEffect, useState } from "react";
 import {
   useAccount,
   useConnect,
+  useDisconnect,
   useContractWrite,
   useContractRead,
   usePrepareContractWrite,
 } from "wagmi";
 import moment from "moment";
+import metamask from "../../public/metamask.svg";
+import coinbase from "../../public/coinbase.svg";
+import wallet from "../../public/wallet.svg";
+// import injected from "../../public/injected.svg";
 
 export default function Home() {
   // Component state
@@ -64,6 +69,7 @@ export default function Home() {
   const { connector: activeConnector, isConnected } = useAccount();
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect();
+  const { disconnect } = useDisconnect();
 
   const onNameChange = (event) => {
     setName(event.target.value);
@@ -79,6 +85,33 @@ export default function Home() {
     useContractRead();
     console.log("fetched!");
   };
+
+  const connectorsStyle = [
+    {
+      id: "metaMask",
+      svg: metamask,
+      style:
+        "ring-metamask-500 shadow-metamask-400/50 text-metamask-500 hover:from-metamask-500 hover:to-metamask-700 hover:ring-metamask-700 hover:shadow-lg hover:shadow-metamask-500/50",
+    },
+    {
+      id: "coinbaseWallet",
+      svg: coinbase,
+      style:
+        "ring-coinbase-600 shadow-coinbase-400/50 text-coinbase-600 hover:from-coinbase-600 hover:to-coinbase-800 hover:ring-coinbase-800 hover:shadow-lg hover:shadow-coinbase-600/50",
+    },
+    {
+      id: "walletConnect",
+      svg: wallet,
+      style:
+        "ring-wallet-600 shadow-wallet-400/50 text-wallet-600 hover:from-wallet-600 hover:to-wallet-800 hover:ring-wallet-800 hover:shadow-lg hover:shadow-wallet-600/50",
+    },
+    {
+      id: "injected",
+      svg: "→",
+      style:
+        "ring-injected-600 shadow-injected-400/50 text-injected-600 hover:from-injected-600 hover:to-injected-800 hover:ring-injected-800 hover:shadow-lg hover:shadow-injected-600/50",
+    },
+  ];
 
   useEffect(() => {
     let buyMeACoffee;
@@ -102,9 +135,17 @@ export default function Home() {
         {isConnected ? (
           <>
             {isConnected && (
-              <div className="absolute top-5 right-5 italic font-extralight">
-                Connected to {activeConnector?.name}
-              </div>
+              <>
+                <div className="absolute top-5 right-5 italic font-extralight">
+                  Connected to {activeConnector?.name}
+                </div>
+                <div
+                  className="absolute top-10 right-5 font-bold hover:underline cursor-pointer"
+                  onClick={() => disconnect()}
+                >
+                  Disconnect
+                </div>
+              </>
             )}
             <div className="w-64 p-5 backdrop-blur-sm bg-white/20 rounded-lg drop-shadow-xl">
               <form className="w-full">
@@ -168,18 +209,24 @@ export default function Home() {
           </>
         ) : (
           <>
-            {connectors.map((connector) => (
-              <button
-                disabled={!connector.ready}
-                key={connector.id}
-                onClick={() => connect({ connector })}
-              >
-                {connector.name}
-                {isLoading &&
-                  pendingConnector?.id === connector.id &&
-                  " (connecting)"}
-              </button>
-            ))}
+            <div className="flex flex-col items-center w-64 p-5 backdrop-blur-sm bg-white/20 rounded-lg drop-shadow-xl mx-auto">
+              {connectors.map((connector) => (
+                <button
+                  disabled={!connector.ready}
+                  key={connector.id}
+                  onClick={() => connect({ connector })}
+                  className={`flex rounded-full p-2 my-4 w-40 items-center justify-center transition ease-in-out align-middle bg-[#EFDECD] ring shadow-lg hover:-translate-y-1 hover:scale-105 hover:bg-gradient-to-r duration-300 hover:ring hover:text-white 
+                ${connectorsStyle.map((connectorStyle) =>
+                  connectorStyle.id === connector.id ? connectorStyle.style : ""
+                )}`}
+                >
+                  {connector.name}
+                  {isLoading &&
+                    pendingConnector?.id === connector.id &&
+                    " (connecting)"}
+                </button>
+              ))}
+            </div>
           </>
         )}
       </main>
