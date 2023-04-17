@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
           </WagmiConfig>
         ) : (
           <div className="px-2 min-h-screen bg-[#EFDECD] bg-coffee_wave bg-cover flex flex-col justify-center items-center ">
-            <main className="flex flex-col justify-center items-center py-20">
+            <main className="flex flex-col justify-center items-center py-10">
               <h1 className="flex-wrap m-10 p-10 text-6xl text-center font-bold whitespace-normal">
                 Buy{" "}
                 <span className="bg-gradient-to-r from-cyan-400 to-blue-800  bg-clip-text text-transparent font-extrabold">
@@ -98,14 +98,15 @@ export default function RootLayout({ children }) {
               </div>
             </main>
 
-            <footer className="w-full h-24 flex mt-12 justify-center items-center border-t border-black">
-              <div className="w-64 p-5 mx-auto">
-                <div className="animate-pulse flex space-x-4">
-                  <div className="flex-1 space-y-1 py-1">
-                    <div className="h-2 bg-slate-700 rounded "></div>
-                  </div>
-                </div>
-              </div>
+            <footer className="w-full h-24 flex mt-12 justify-center items-center ">
+              <a
+                href="https://github.com/MatteoDigiorgio/BuyMeACoffee"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-center items-center flex-grow"
+              >
+                Created by @matteodigiorgio
+              </a>
             </footer>
           </div>
         )}
