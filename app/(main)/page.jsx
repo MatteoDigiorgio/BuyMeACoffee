@@ -113,7 +113,7 @@ export default function Home() {
     let buyMeACoffee;
   }, []);
   return (
-    <div className="px-2 min-h-full max-h-full bg-[#EFDECD] bg-coffee_wave bg-cover flex flex-col justify-center items-center ">
+    <div className="px-2 min-h-screen bg-cover bg-center bg-no-repeat bg-[#EFDECD] bg-coffee_wave flex flex-col justify-center items-center">
       <Head>
         <title>Buy Matteo a Coffee!</title>
         <meta name="description" content="Tipping site" />
