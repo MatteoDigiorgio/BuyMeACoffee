@@ -1,5 +1,6 @@
 node_modules
 .next
+.yarn
 .env
 coverage
 coverage.json
