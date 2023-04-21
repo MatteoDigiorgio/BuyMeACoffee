@@ -34,9 +34,8 @@ const client = createClient({
       },
     }),
     new WalletConnectConnector({
-      chains,
       options: {
-        projectId: "...",
+        projectId: "b31f66f237aad176cac20958b169b168",
       },
     }),
     new InjectedConnector({
@@ -64,10 +63,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {ready ? (
-          <WagmiConfig client={client}>
-            {/* <Header /> */}
-            {children}
-          </WagmiConfig>
+          <WagmiConfig client={client}>{children}</WagmiConfig>
         ) : (
           <div className="px-2 min-h-screen bg-[#EFDECD] bg-coffee_wave bg-cover flex flex-col justify-center items-center ">
             <main className="flex flex-col justify-center items-center py-10">
