@@ -44,5 +44,5 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
     "wagmi": "^0.12.12"
-  },
+  }
 }
