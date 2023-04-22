@@ -10,7 +10,16 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WagmiConfig } from "wagmi";
 
+import {
+  EthereumClient,
+  w3mConnectors,
+  w3mProvider,
+} from "@web3modal/ethereum";
+import { Web3Modal } from "@web3modal/react";
+
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+
+const projectId = "b31f66f237aad176cac20958b169b168";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [sepolia],
@@ -50,6 +59,8 @@ const client = createClient({
   webSocketProvider,
 });
 
+const ethereumClient = new EthereumClient(client, chains);
+
 export default function RootLayout({ children }) {
   const [ready, setReady] = useState(false);
 
@@ -63,7 +74,10 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {ready ? (
-          <WagmiConfig client={client}>{children}</WagmiConfig>
+          <>
+            <WagmiConfig client={client}>{children}</WagmiConfig>
+            <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+          </>
         ) : (
           <div className="px-2 min-h-screen bg-[#EFDECD] bg-coffee_wave bg-cover flex flex-col justify-center items-center ">
             <main className="flex flex-col justify-center items-center py-10">
