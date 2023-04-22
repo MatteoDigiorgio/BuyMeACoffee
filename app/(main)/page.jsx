@@ -6,6 +6,7 @@ import Memos from "../(memos)/Memos";
 import React from "react";
 import { useAccount } from "wagmi";
 import { isMobile } from "react-device-detect";
+import WalletConnect from "../(connectors)/WalletConnect";
 
 export default function Home() {
   const { isConnected } = useAccount();
@@ -26,9 +27,9 @@ export default function Home() {
           a Coffee!
         </h1>
 
-        {isConnected ? <Form /> : <Connectors />}
+        {isConnected ? <Form /> : isMobile ? <WalletConnect /> : <Connectors />}
       </main>
-      
+
       <div className="grid grid-col-1 mt-8 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {isConnected && <Memos />}
       </div>
